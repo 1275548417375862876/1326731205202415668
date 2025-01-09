@@ -123,7 +123,7 @@ end
 
 local MainTab = Menu.Tab("Main")
 
-Menu:SetTitle('Cott<font color="#d17bff">.</font><font color="#BE3AFF">l</font><font color="#B31EFD">o</font><font color="#A205F0">l</font> - <font color="#00FF00">Public</font> - [By <font color="#BE3AFF">Lxst </font>]')
+Menu:SetTitle('Cott<font color="#d17bff">.</font><font color="#BE3AFF">l</font><font color="#B31EFD">o</font><font color="#A205F0">l</font> - <font color="#00FF00">Public</font> - [By <font color="#BE3AFF">5Soul </font>]')
 Menu:SetVisible(true)
 Menu:Init()
 Menu:SetTab("Main")
