@@ -2670,31 +2670,6 @@ FGroup:addToggle({
 local loser1 = Players.LocalPlayer
 local isFeatureActive = false
 
-FGroup:addToggle({
-    text = "Anti Carry",
-    flag = "AVToggle",
-    callback = function(state)
-        isFeatureActive = state
-    end
-})
-
-FGroup:addToggle({
-    text = "Died Tp",
-    flag = "DPToggle",
-    callback = function(v)
-        getgenv().DiedTp = v
-        while true do
-            if not getgenv().DiedTp then return end
-            wait()
-            if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
-                local pos = game:GetService "Players".LocalPlayer.Character.HumanoidRootPart.CFrame
-                wait(6)
-                game:GetService "Players".LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-            end
-        end
-    end
-})
-
 local function loser2(character)
     local loser3 = character:WaitForChild("Being Carried", 5)
     if loser3 and loser3:IsA("BoolValue") then
@@ -2732,6 +2707,31 @@ end)
 if loser1.Character then
     loser2(loser1.Character)
 end
+
+FGroup:addToggle({
+    text = "Anti Carry",
+    flag = "AVToggle",
+    callback = function(state)
+        isFeatureActive = state
+    end
+})
+
+FGroup:addToggle({
+    text = "Died Tp",
+    flag = "DPToggle",
+    callback = function(v)
+        getgenv().DiedTp = v
+        while true do
+            if not getgenv().DiedTp then return end
+            wait()
+            if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
+                local pos = game:GetService "Players".LocalPlayer.Character.HumanoidRootPart.CFrame
+                wait(6)
+                game:GetService "Players".LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+            end
+        end
+    end
+})
 
 FGroup:addButton({
     text = "Anti Fling",
@@ -3385,7 +3385,7 @@ KGroup:addKeybind({
     callback = function()
         bhopActive = not bhopActive
         if bhopActive then
-            velocity = 20
+            velocity = velocity
             if not bhopConnection then
                 bhopConnection = runService.Heartbeat:Connect(bhop)
             end
@@ -3423,7 +3423,7 @@ KGroup:addSlider({
 KGroup:addSlider({
     flag = "BHMVelocity",
     text = "Max Velocity",
-    min = 100,
+    min = 0,
     max = 1000,
     value = 100,
     callback = function(x)
@@ -4901,14 +4901,8 @@ local commandRegistry = {
         end
     end,
 
-    users = function(_, executor)
-        for _, player in pairs(game.Players:GetPlayers()) do
-            local chatData = {
-                [1] = "- I'm using Cott.lol -",
-                [2] = "All"
-            }
-            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(chatData))
-        end
+    cottusers = function(_, executor)
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("- I'm using Cott.lol -", "All")
     end
 }
 
@@ -4969,7 +4963,7 @@ game.Players.PlayerChatted:Connect(function(chatType, player, message)
                 else
                     commandRegistry[cmd](target, player)
                 end
-            elseif cmd == "users" then
+            elseif cmd == "cottusers" then
                 commandRegistry[cmd](nil, player)
             end
         end
