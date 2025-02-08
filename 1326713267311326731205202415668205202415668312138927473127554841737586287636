@@ -2667,52 +2667,52 @@ FGroup:addToggle({
     end
 })
 
-local loser1 = Players.LocalPlayer
-local isFeatureActive = false
+local okplayer = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
 
-local function loser2(character)
-    local loser3 = character:WaitForChild("Being Carried", 5)
-    if loser3 and loser3:IsA("BoolValue") then
-        loser3:GetPropertyChangedSignal("Value"):Connect(function()
-            if not isFeatureActive then return end
+local Tloser1 = okplayer.LocalPlayer
+local antiCarryEnabled = false 
 
-            if loser3.Value == true then
-                local loser4 = loser1:WaitForChild("Backpack")
-                for _, tool in pairs(loser4:GetChildren()) do
+local function Tloser2(character)
+    local Tloser3 = character:WaitForChild("Being Carried", 5)
+    if Tloser3 and Tloser3:IsA("BoolValue") then
+        Tloser3:GetPropertyChangedSignal("Value"):Connect(function()
+            if antiCarryEnabled and Tloser3.Value == true then 
+                local Tloser4 = Tloser1:WaitForChild("Backpack")
+                for _, tool in pairs(Tloser4:GetChildren()) do
                     if tool:IsA("Tool") and tool:FindFirstChild("DamageRemote") and tool.Name ~= "Kawaii Revolver" then
                         character:WaitForChild("Humanoid"):EquipTool(tool)
                         break
                     end
                 end
 
-                local loser5 = character:FindFirstChildOfClass("Tool")
-                local loser6 = character:FindFirstChild("Humanoid")
-                if loser5 and loser5:FindFirstChild("DamageRemote") and loser6 then
+                local Tloser5 = character:FindFirstChildOfClass("Tool")
+                local Tloser6 = character:FindFirstChild("Humanoid")
+                if Tloser5 and Tloser5:FindFirstChild("DamageRemote") and Tloser6 then
                     repeat
-                        loser5.DamageRemote:FireServer(loser6)
+                        if not antiCarryEnabled then break end 
+                        Tloser5.DamageRemote:FireServer(Tloser6)
                         wait(0.1)
-                    until loser6.Health <= 0 or loser3.Value == false or not isFeatureActive
+                    until Tloser6.Health <= 0 or Tloser3.Value == false
                 end
             end
         end)
     end
 end
 
-loser1.CharacterAdded:Connect(function(character)
-    if isFeatureActive then
-        loser2(character)
-    end
+Tloser1.CharacterAdded:Connect(function(character)
+    Tloser2(character)
 end)
 
-if loser1.Character then
-    loser2(loser1.Character)
+if Tloser1.Character then
+    Tloser2(Tloser1.Character)
 end
 
 FGroup:addToggle({
     text = "Anti Carry",
     flag = "AVToggle",
     callback = function(state)
-        isFeatureActive = state
+        antiCarryEnabled = state
     end
 })
 
